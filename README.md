@@ -294,15 +294,22 @@
 
 ## 装与开
 
-```powershell
-# 在 Harness Web UI：Plugins → Add plugin → 填这个绝对路径
-C:\DSH\dsh-floating-ball
-```
-
-或者命令行（等价，由 plugin_manager 完成安装与启用）：
+**从 GitHub 装（推荐）**：在 DSH Desktop 的内置终端里：
 
 ```
-plugin_manager  install_bundle  target = C:\DSH\dsh-floating-ball
+dsh plugin --profile desktop add github:y1s2y3/dsh-floating-ball
+```
+
+装完**重启 DSH Desktop**（插件名 `dsh-floating-ball`，Windows 专用）。
+
+> 本机访问 codeload.github.com 慢/不通时，可以在 Profile 的 `package.json` 里把依赖写成镜像地址：
+> `"dsh-floating-ball": "https://gh-proxy.com/https://codeload.github.com/y1s2y3/dsh-floating-ball/tar.gz/<commit>"`
+> 再重启 Desktop。
+
+**从本地目录装（开发时）**：Web UI 的 Plugins → Add plugin 里填本目录绝对路径，或命令行：
+
+```
+plugin_manager install_bundle target = <仓库绝对路径>
 ```
 
 开启后立即生效，不需要重启 Harness（唯一例外见「自测与诊断」）。
