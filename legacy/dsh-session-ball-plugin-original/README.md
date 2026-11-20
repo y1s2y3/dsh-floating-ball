@@ -44,3 +44,9 @@
 `resources/ball.ps1`，然后 `node deploy.mjs` 部署并重启 Desktop。
 
 > 注意：方式 B 会覆盖掉新入口的分发逻辑（生产默认已是 v2），只有确认要整体退回旧版时才用。
+
+## 许可
+
+本目录中的 `session-ball.js` 与 `ball.ps1` 是上游 **dsh-session-ball-plugin**（MIT，
+Copyright (c) 2026 EvilOfRed）的逐字副本，按 MIT 许可随本仓库分发；本仓库根目录的 `LICENSE`
+同时保留上游版权声明与本次修改的版权声明。
