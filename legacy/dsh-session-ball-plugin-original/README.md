@@ -1,6 +1,6 @@
-# 原版插件备份（已改名：dsh-session-ball-plugin-original）
+# 原版插件备份（dsh-session-ball-plugin-original）
 
-本目录是**原版插件**（旧名 `dsh-session-ball-plugin`，现改名 `dsh-session-ball-plugin-original` 以让出名字给新版）（宿主 `session-ball.js` + 球脚本 `ball.ps1`）的只读备份，
+本目录是**原版插件**（原包名 `dsh-session-ball-plugin`）。当前新版包名已定为 `dsh-floating-ball`，原版备份保留原名加后缀，避免混淆（宿主 `session-ball.js` + 球脚本 `ball.ps1`）的只读备份，
 用于：
 
 - 回滚到旧版行为（把 Profile 配置里 `engine` 设为 `upstream` 即可，无需还原文件）；

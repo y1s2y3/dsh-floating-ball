@@ -1,11 +1,11 @@
-# dsh-session-ball-plugin · 工作区开发副本
+# dsh-floating-ball · 工作区开发副本
 
 这是桌面端「会话悬浮球 + 会话面板」插件的**源码工作目录**（不是 npm 包的上游仓库，上游只发布编译产物）。
 
 原来它的全部实体只存在于 DSH Desktop 的 profile 里：
 
 ```
-%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-session-ball-plugin
+%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-floating-ball
 ```
 
 那一份会被插件更新 / `pnpm install` 覆盖，且没有版本管理。现在以本目录为准：
@@ -17,7 +17,7 @@
 
 | 事实 | 说明 |
 |---|---|
-| 上游包 | `dsh-session-ball-plugin@0.10.0`（npm，2026-11-03 发布；本机 2026-11-18 从 0.9.0 升上来） |
+| 上游包 | `dsh-floating-ball@0.10.0`（npm，2026-11-03 发布；本机 2026-11-18 从 0.9.0 升上来） |
 | 导入方式 | npm tarball 解包导入（0.9.0 与 0.10.0 都是），7 个文件与包内 sha256 逐一相同，提交见 `git log` |
 | 本机改动 | 两轮**只在 `resources/ball.ps1`** 的视觉改动（2026-11-03 精致化、2026-11-05 DeepSeek 鲸鱼图标）；升 0.10.0 时已重套，明细见 [docs/LOCAL-CHANGES.md](docs/LOCAL-CHANGES.md) |
 | 不能做的事 | 上游没有 `src/*.ts` 与 `test/`，所以**不能 `npm run build`**，也没有它 README 里写的那些测试；`lib/session-ball.js` 是打包后的可读 JS，直接改它即可 |
@@ -61,7 +61,7 @@
 在资源管理器里双击 `deploy.cmd`，或在终端里：
 
 ```powershell
-cd %USERPROFILE%\Desktop\plugin\dsh-session-ball-plugin
+cd %USERPROFILE%\Desktop\plugin\dsh-floating-ball
 node deploy.mjs --dry-run        # ① 先看要同步哪些文件（不写盘）
 node deploy.mjs                  # ② 真正同步（备份 → 复制 → 校验登记 → 重启球）
 node deploy.mjs --restart-only   # ③ 什么都没改、只想让球重启一遍
@@ -71,7 +71,7 @@ node deploy.mjs --no-restart     # ④ 只复制，不动球
 它做的事：
 
 1. 逐文件 sha256 比对，只列出真正变了的文件；
-2. 把 profile 里的旧版本整份备份到 `backups/<时间戳>/dsh-session-ball-plugin/`；
+2. 把 profile 里的旧版本整份备份到 `backups/<时间戳>/dsh-floating-ball/`；
 3. 复制 `package.json / cordis.patch.yml / README.md / LICENSE / icon.svg / lib / resources`；
 4. 确认 profile 的 `dependencies` 与 `dsh.profile.bundles` 里有这个包（只补缺失，不改已有版本号）；
 5. `resources/ball.ps1` 有变化时，用 `tools/restart-ball.ps1` 结束球进程 —— 宿主每一拍都在盯这个子进程，
@@ -89,7 +89,7 @@ node deploy.mjs --no-restart     # ④ 只复制，不动球
 
 **注意**：以后再跑 `pnpm install` / 插件更新，profile 里那份会被覆盖回上游版本 —— 重跑一次 `deploy.mjs` 即可恢复。
 
-**版本号为什么还是 0.9.0**：2026-11-18 升到 0.10.0 时，deploy 只覆盖了 profile 里的文件，没改 dependencies（也就能不动 pnpm-lock.yaml，避免插件管理器把依赖判成需要重装）。所以 profile 的 package.json 仍写着 dsh-session-ball-plugin: 0.9.0，deploy 每次都会提示这条不一致 —— 这是有意的。真要「正式换版本」就走 GUI 的插件更新，更新完再跑一次 deploy.mjs 把本机视觉改动盖回去。
+**版本号为什么还是 0.9.0**：2026-11-18 升到 0.10.0 时，deploy 只覆盖了 profile 里的文件，没改 dependencies（也就能不动 pnpm-lock.yaml，避免插件管理器把依赖判成需要重装）。所以 profile 的 package.json 仍写着 dsh-floating-ball: 0.9.0，deploy 每次都会提示这条不一致 —— 这是有意的。真要「正式换版本」就走 GUI 的插件更新，更新完再跑一次 deploy.mjs 把本机视觉改动盖回去。
 
 ---
 
@@ -106,7 +106,7 @@ git show be03c78:resources/ball.ps1 > resources/ball.ps1
 node deploy.mjs
 ```
 
-profile 侧的回滚：把 `backups/<时间戳>/dsh-session-ball-plugin/` 整份复制回
+profile 侧的回滚：把 `backups/<时间戳>/dsh-floating-ball/` 整份复制回
 `%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-floating-ball\`，再 `node deploy.mjs --restart-only`。
 
 ---
@@ -125,9 +125,9 @@ profile 侧的回滚：把 `backups/<时间戳>/dsh-session-ball-plugin/` 整份
 - 升级上游（如以后的 0.11）会覆盖本机的两轮视觉改动，重做步骤与 0.10.0 这次的核对方法见
   `docs/LOCAL-CHANGES.md` 的「升级到更新的版本」一节。
 
-## 2026-11-20：改名为 dsh-session-ball-plugin（0.11.0）
+## 2026-11-20：改名为 dsh-floating-ball（0.11.0）
 
-- 包名 / 仓库名 / profile 里的插件名：`dsh-session-ball-plugin` -> `dsh-session-ball-plugin`；版本 0.10.0 -> 0.11.0。
+- 包名 / 仓库名 / profile 里的插件名：`dsh-floating-ball` -> `dsh-floating-ball`；版本 0.10.0 -> 0.11.0。
 - 三个「非官方」标注位置：① 图标保持干净（不加字）；② `package.json` 的 description / `meta.title` / `meta.description` 与 README 首屏写明「非官方 · 社区自制，与 DeepSeek 官方无关」；③ 公众号封面右下角/顶部放「非官方 · 社区插件」小标签（`assets/cover-wechat-900x383.png`）。
 - 图标与素材在 `assets/`：`icon.svg`（源）、`icon-1024/512/256/128/64/48/32/16.png`、`preview-sizes.png`、`cover-wechat-900x383.png`；`tools/render-icon.ps1` 与 `tools/make-cover.py` 可原样重出。
 - 图标是蓝渐变球 + **原创鲸鱼轮廓**（头身比例、尾鳍角度、水花都重新画，不是 DeepSeek 商标图形）+ 右上三颗上浮小气泡；`tools/render-icon.ps1` 从 0..100 的本地坐标渲染，`icon.svg` 同源。
@@ -139,8 +139,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\migrate-profile.ps1 -W
 powershell -NoProfile -ExecutionPolicy Bypass -File tools\migrate-profile.ps1           # 执行，然后重启 DSH Desktop
 ```
 
-迁移脚本会把 `node_modules\dsh-floating-ball` 改名为 `dsh-session-ball-plugin`、改 profile 的依赖/清单与 loader row 的 name，并把两个文件各留一份 `.bak-<时间戳>`。
+迁移脚本会把 `node_modules\dsh-floating-ball` 改名为 `dsh-floating-ball`、改 profile 的依赖/清单与 loader row 的 name，并把两个文件各留一份 `.bak-<时间戳>`。
 
-**迁移分两步**：① `migrate-profile.ps1` 改文件；② 正在运行的旧插件实例还会从旧路径读球脚本，所以迁移后会留一份旧名兼容副本让球继续活着 —— **下次重启 DSH Desktop** 后宿主才会真正加载 `dsh-session-ball-plugin`，这时再跑 `tools\finish-migration.ps1` 删掉旧名副本（先 `-WhatIf` 看要删什么）。
+**迁移分两步**：① `migrate-profile.ps1` 改文件；② 正在运行的旧插件实例还会从旧路径读球脚本，所以迁移后会留一份旧名兼容副本让球继续活着 —— **下次重启 DSH Desktop** 后宿主才会真正加载 `dsh-floating-ball`，这时再跑 `tools\finish-migration.ps1` 删掉旧名副本（先 `-WhatIf` 看要删什么）。
 
 **屏幕上的球也换成了应用图标那只原创鲸鱼**：`resources/ball.ps1` 的 `BallMark` 不再是 DeepSeek 图标路径，而是 `assets/icon.svg` 同源的原创鲸鱼（身体/胸鳍/背鳍 + 蓝色眼睛/嘴线/腹线，Viewbox 包住，`Apply-Shape` 按 `ballSize * 0.56` 缩放），桌面球与图标、封面是同一只鲸鱼。

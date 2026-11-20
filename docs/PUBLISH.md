@@ -28,8 +28,8 @@ node tools/publish-github.mjs
 | 动作 | 说明 |
 |---|---|
 | `main` 分支 | 全部文件（代码 / 资源 / 文档 / 工具），逐文件 sha256 不变的 base64 blob |
-| `v0.11.0` | annotated tag（tag object → commit） |
-| Release `v0.11.0 · 视觉封版` | 说明里含功能亮点、安装命令、非官方声明 |
+| `v1.0.1` | annotated tag（tag object → commit） |
+| Release `v1.0.1 · 生产版（新宿主/新面板）` | 说明里含功能亮点、安装命令、非官方声明 |
 | 仓库描述 / topics | 非官方声明 + `dsh` `dsh-plugin` `deepseek-harness` `floating-ball` `windows` `wpf` `overlay` `desktop` |
 
 ## 四、校验
@@ -43,13 +43,13 @@ node tools/publish-github.mjs
 手动复核：
 
 ```bash
-gh api repos/y1s2y3/dsh-session-ball-plugin --jq '.default_branch, .description'
-gh api repos/y1s2y3/dsh-session-ball-plugin/git/trees/main?recursive=1 --jq '.tree | map(select(.type=="blob")) | length'
-gh api repos/y1s2y3/dsh-session-ball-plugin/releases/latest --jq '.tag_name, .html_url'
+gh api repos/y1s2y3/dsh-floating-ball --jq '.default_branch, .description'
+gh api repos/y1s2y3/dsh-floating-ball/git/trees/main?recursive=1 --jq '.tree | map(select(.type=="blob")) | length'
+gh api repos/y1s2y3/dsh-floating-ball/releases/latest --jq '.tag_name, .html_url'
 ```
 
 ## 五、注意
 
-① **npm 还没发**：`dsh plugin add dsh-session-ball-plugin` 要等 npm 上架后才好用；现在装 GitHub 版用 `github:y1s2y3/dsh-session-ball-plugin`。
+① **npm 还没发**：`dsh plugin add dsh-floating-ball` 要等 npm 上架后才好用；现在装 GitHub 版用 `github:y1s2y3/dsh-floating-ball`。
 ② 每次发新版：改 `package.json` 的 `version`、把脚本顶部 `VERSION` 一起改掉，再跑一次发布。
 ③ API 发布的 commit 与本地 git 的 commit sha **不同**（本地是另一条历史）；本地只作为源，`main` 以远端为准。以后如果要让本地和远端同源，正常终端里 `git push --force` 即可（内容一致）。

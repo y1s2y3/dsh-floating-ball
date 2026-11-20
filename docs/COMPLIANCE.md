@@ -23,11 +23,11 @@
 ① 在 `assets/icon.svg`、`resources/ball.ps1`、`tools/render-icon.ps1` 三处比对鲸鱼路径：**逐字符一致**，且不含 DeepSeek 鲸鱼的路径特征串（旧版路径 `M23.748 4.651…` 已删除）。
 ② `node tools/check-brand.mjs` 输出 `[PASS]`，路径指纹 `947598534486d9ee`。
 ③ 全仓库检索 `simple-icons` / `DeepSeek 鲸鱼`：仅 `README-DEV.md` 与 `docs/LOCAL-CHANGES.md` 作为历史记录提及，**不包含图形数据**。
-④ 命名：`dsh-session-ball-plugin` 是功能性描述 + 社区命名习惯，未使用 DeepSeek 官方名称作为产品名。
+④ 命名：`dsh-floating-ball` 是功能性描述 + 社区命名习惯，未使用 DeepSeek 官方名称作为产品名。
 
 ### 2. 上游 MIT 许可
 
-① `LICENSE` 保留原文：`MIT License / Copyright (c) 2026 EvilOfRed`（上游 `dsh-session-ball-plugin` 作者）。
+① `LICENSE` 保留原文：`MIT License / Copyright (c) 2026 EvilOfRed`（上游 `dsh-floating-ball` 作者）。
 ② README「来源与许可」段写明：本仓库是**改名 + 本地修改**版本，并指向 npm 上游包。
 ③ 修改了哪些地方，`docs/LOCAL-CHANGES.md` 按 ①–⑧ 编号记录（视觉、面板筛选、拖动修复、改名等），可追溯。
 
@@ -36,7 +36,7 @@
 `package.json` 补：
 ```json
 "version": "0.11.1",
-"author": "EvilOfRed (original dsh-session-ball-plugin author)",
+"author": "EvilOfRed (original dsh-floating-ball author)",
 "contributors": ["y1s2y3"],
 "repository": { "type": "git", "url": "git+https://github.com/y1s2y3/dsh-floating-ball.git" },
 "homepage": "https://github.com/y1s2y3/dsh-floating-ball#readme",
@@ -71,7 +71,7 @@
 
 ## 三、仍待处理的「非合规但需留意」项
 
-① **npm 发布未做**：要 `dsh plugin add dsh-session-ball-plugin` 这种短命令，需要把包发到 npm；发布前请确认包名 `dsh-session-ball-plugin` 未被占用，且 npm 账号有 2FA/scope 设置。
+① **npm 发布未做**：要 `dsh plugin add dsh-floating-ball` 这种短命令，需要把包发到 npm；发布前请确认包名 `dsh-floating-ball` 未被占用，且 npm 账号有 2FA/scope 设置。
 ② **公众号推文**：推文里的截图如使用真实会话内容，发布前需遮挡项目名/人名（本篇目前只有示意图与图标，无真实截图，风险低）。
 ③ **商标复审**：目前是「原创鲸鱼 + 悬浮球」，与 DeepSeek 官方鲸鱼图形有明显差异；若后续有人提出异议，保留 `docs/BRAND.md` 里的设计说明与路径指纹可作为原创证据。
 ④ **字体授权（已解决）**：封面与预览图已改用 **SIL OFL 1.1 的 Noto Sans SC 子集**，字体文件与 OFL 全文随仓库分发（`assets/fonts/`），修改版已按 OFL 要求改名；桌面球 UI 字体来自 Windows 系统（运行时不随包分发）。

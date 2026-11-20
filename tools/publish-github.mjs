@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url'
 const OWNER = 'y1s2y3'
 const NAME = 'dsh-floating-ball'
 const BRANCH = 'main'
-const VERSION = 'v1.0.1'
+const VERSION = 'v1.0.2'
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 
 const token = process.env.GH_TOKEN || (() => {
@@ -127,15 +127,15 @@ if (tagRef.status === 200) {
 const releaseBody = [
   '**非官方 · 社区自制**（与 DeepSeek / DeepSeek Harness 官方无关）。',
   '',
-  '**v1.0.1 起为生产版**：包名改为 `dsh-session-ball-plugin`（沿用原版名字），GitHub 仓库地址保持',
-  '`y1s2y3/dsh-floating-ball` 不变。原版插件已逐字备份到 `legacy/dsh-session-ball-plugin-original/`。',
+  '**v1.0.1 起为生产版**：包名定为 `dsh-floating-ball`（与 GitHub 仓库同名），',
+  '原版插件已逐字备份到 `legacy/dsh-session-ball-plugin-original/`。',
   '',
   'Windows 置顶悬浮球：所有会话的整体状态一眼可见 —— 几个在跑、谁在等你、有没有出错；**只要有会话在输出，',
   '球就是蓝色并缓慢呼吸，安静下来就是跑完了**。展开面板后每条会话自带输入框与卡片，可以直接在球上回话、',
   '批准、答问题、开新会话。',
   '',
-  '### 本版亮点（v1.0.0 → v1.0.1）',
-  '- **新宿主 + 新面板转生产**（engine v2 为默认，`engine: upstream` 仅作回滚）',
+  '### 本版亮点（v1.0.0 → v1.0.2）',
+  '- 包名最终定为 `dsh-floating-ball`（与仓库同名），`dsh plugin add github:y1s2y3/dsh-floating-ball` 一条命令可用\n- **新宿主 + 新面板转生产**（engine v2 为默认，`engine: upstream` 仅作回滚）',
   '- 面板：头部「N 个待审批」橙色胶囊；高度按内容自适应、超过上限可滚动；发送 / 审批 / 多题分步作答 / 新会话',
   '- 球：鼠标悬停鲸鱼游动（摇摆 + 浮动 + 气泡呼吸）、点击手光标、待审批橙色（错误仍为红色）',
   '- 开关面板交叉淡入、拖动流畅度对齐原版（移动不夹紧、松手夹紧、拖动暂停轮询）',

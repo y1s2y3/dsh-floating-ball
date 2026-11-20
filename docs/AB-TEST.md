@@ -10,7 +10,7 @@
 
 ```yaml
 - id: session-ball
-  name: dsh-session-ball-plugin
+  name: dsh-floating-ball
   config:
     # 不写 engine = 生产 v2；只有写 engine: upstream 才回滚到旧版
     enabled: true
@@ -34,8 +34,8 @@
 ## ③ 回滚
 
 - 最快：把 `engine: v2` 改成 `engine: upstream`（或删掉本行），重启 Desktop；
-- 或者恢复部署前备份：`backups/<时间戳>/dsh-session-ball-plugin` 复制回
-  `~/.dsh/profiles/desktop/node_modules/dsh-session-ball-plugin`，再重启；
+- 或者恢复部署前备份：`backups/<时间戳>/dsh-floating-ball` 复制回
+  `~/.dsh/profiles/desktop/node_modules/dsh-floating-ball`，再重启；
 - profile 配置备份：`~/.dsh/profiles/desktop/cordis.patch.yml.bak-20261120-1443`。
 
 ## ④ 已补上的能力（v0.12.1）
