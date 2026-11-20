@@ -2,16 +2,21 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets")
+FONT_DIR = os.path.join(ROOT, "fonts")
+# 只用 SIL OFL 1.1 的 Noto Sans SC 子集（随仓库分发，见 assets/fonts/FONT-NOTICE.txt）
+REGULAR_FONT = os.path.join(FONT_DIR, "NotoSansSC-Regular-subset.ttf")
+BOLD_FONT = os.path.join(FONT_DIR, "NotoSansSC-Bold-subset.ttf")
+MSYH = REGULAR_FONT
+MSYHBD = BOLD_FONT
+SEGOEB = BOLD_FONT
+SEGOE = REGULAR_FONT
 W, H = 900, 383
 SS = 2  # supersample for the cover
+
 
 def font(path, size):
     return ImageFont.truetype(path, size)
 
-MSYH = r"C:\Windows\Fonts\msyh.ttc"
-MSYHBD = r"C:\Windows\Fonts\msyhbd.ttc"
-SEGOEB = r"C:\Windows\Fonts\segoeuib.ttf"
-SEGOE = r"C:\Windows\Fonts\segoeui.ttf"
 
 icon = Image.open(os.path.join(ROOT, "icon-1024.png")).convert("RGBA")
 

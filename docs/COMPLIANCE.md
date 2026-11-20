@@ -11,7 +11,7 @@
 | 上游代码许可（MIT） | ✅ 通过 | 保留原 `LICENSE`（Copyright (c) 2026 EvilOfRed）；README 新增「来源与许可」段，说明基于上游改名修改 |
 | 包元数据 | ✅ 已补 | 补 `repository` / `homepage` / `bugs` / `author` / `contributors`；版本 0.11.1 |
 | 敏感信息 / 隐私 | ✅ 已修 | 仓库无 token / 密钥 / 真实项目数据；工具脚本里的本机绝对路径改为脚本相对路径，README-DEV 里的本机用户目录已改为 `%USERPROFILE%` |
-| 第三方素材 | ✅ 通过 | 图标/封面均用自绘路径或系统字体渲染；未打包他人图片、字体文件或素材 |
+| 第三方素材 | ✅ 通过 | 图标为自绘路径；封面/预览图改用 SIL OFL 1.1 的 Noto Sans SC 子集（随仓库分发 + 版权声明）；未打包他人图片 |
 | 依赖安全 | ✅ 通过 | 无 runtime `dependencies`；仅 peer `@deepseek-ai/cordis` 与 devDependencies（构建/测试用），均为官方或常见包 |
 | 安装与权限说明 | ✅ 通过 | README 写明 Windows 专用、需要桌面窗口权限、安装方式；无夸大「官方」「安全」等表述 |
 | 发布信息 | ✅ 通过 | Release / README / package.json 均标注非官方；安装命令为 `github:` 形式（npm 尚未发布） |
@@ -74,4 +74,4 @@
 ① **npm 发布未做**：要 `dsh plugin add dsh-floating-ball` 这种短命令，需要把包发到 npm；发布前请确认包名 `dsh-floating-ball` 未被占用，且 npm 账号有 2FA/scope 设置。
 ② **公众号推文**：推文里的截图如使用真实会话内容，发布前需遮挡项目名/人名（本篇目前只有示意图与图标，无真实截图，风险低）。
 ③ **商标复审**：目前是「原创鲸鱼 + 悬浮球」，与 DeepSeek 官方鲸鱼图形有明显差异；若后续有人提出异议，保留 `docs/BRAND.md` 里的设计说明与路径指纹可作为原创证据。
-④ **第三方字体**：封面 PNG 里使用了系统字体的字形；如果需要更严格的商用字体授权证明，可换成开源字体（如 Noto Sans SC）重出封面。
+④ **字体授权（已解决）**：封面与预览图已改用 **SIL OFL 1.1 的 Noto Sans SC 子集**，字体文件与 OFL 全文随仓库分发（`assets/fonts/`），修改版已按 OFL 要求改名；桌面球 UI 字体来自 Windows 系统（运行时不随包分发）。

@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url'
 const OWNER = 'y1s2y3'
 const NAME = 'dsh-floating-ball'
 const BRANCH = 'main'
-const VERSION = 'v0.11.1'
+const VERSION = 'v0.11.2'
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 
 const token = process.env.GH_TOKEN || (() => {
@@ -136,6 +136,7 @@ const releaseBody = [
   '- 输入框更紧凑；聚合统计行与拖动提示隐藏',
   '- 修复高 DPI（125%）下拖球越拖越偏',
   '- 合规修正：补 MIT 上游归属、补 repository/author 元数据、去掉工具脚本里的本机绝对路径',
+  '- 字体授权：封面/预览图改用 SIL OFL 1.1 的 Noto Sans SC 子集（随仓库分发，含版权声明）',
   '',
   '### 安装',
   '在 DSH Desktop 内置终端里：',

@@ -63,3 +63,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\render-icon.ps1
 # 公众号封面 + 多尺寸预览图
 python tools\make-cover.py
 ```
+
+## 七、字体与授权
+
+封面图（`assets/cover-wechat-900x383.png`）与尺寸预览图（`assets/preview-sizes.png`）里的文字，
+用的是仓库自带的 **Noto Sans SC 子集**（SIL Open Font License 1.1）：
+
+- `assets/fonts/NotoSansSC-Regular-subset.ttf` / `NotoSansSC-Bold-subset.ttf`：由系统 Noto Sans SC 可变字体
+  实例化到 400/700 字重，并只保留封面用到的 147 个字形；子集字体改名为 “Noto Sans SC Media Subset”（OFL 对修改版不使用 Reserved Font Name 的要求）。
+- `assets/fonts/OFL.txt`：许可证全文 + 源字体版权声明（© 2014-2021 Adobe，Reserved Font Name “Source”）。
+- 重新生成：`python tools/build-font-subset.py`（改文案后要同步脚本里的 CHARSET），再 `python tools/make-cover.py`。
+
+桌面球界面里的字体仍从 Windows 系统字体里选（Segoe UI Variable Text / Microsoft YaHei UI），
+这是**运行时选择**、不随包分发，也没有字体文件进仓库；如果要做严格自证，可以改成随附 Noto 字体。
