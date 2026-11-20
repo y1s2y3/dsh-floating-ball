@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 把本目录的 dsh-floating-ball 同步到本机 DSH Desktop 的 desktop profile，
+ * 把本目录的 dsh-session-ball-plugin 同步到本机 DSH Desktop 的 desktop profile，
  * 并让「球」用上新脚本。
  *
  * 做四件事：
@@ -30,7 +30,7 @@ import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url))
-const PKG_NAME = process.env.DSH_INSTALL_NAME || 'dsh-floating-ball'
+const PKG_NAME = process.env.DSH_INSTALL_NAME || 'dsh-session-ball-plugin'
 const DRY_RUN = process.argv.includes('--dry-run')
 const NO_RESTART = process.argv.includes('--no-restart')
 const RESTART_ONLY = process.argv.includes('--restart-only')

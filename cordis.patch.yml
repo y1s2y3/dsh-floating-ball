@@ -1,7 +1,7 @@
-# Configuration layer contributed by `dsh-floating-ball`.
+# Configuration layer contributed by `dsh-session-ball-plugin`.
 #
 # It is applied after the bundle layers of the Profile that installs it, so the
-# row below resolves `dsh-floating-ball` from the running Profile and
+# row below resolves `dsh-session-ball-plugin` from the running Profile and
 # contributes nothing that the Profile must declare itself.
 #
 # (The package was called `dsh-thinking-ball-plugin` until the ball stopped
@@ -189,7 +189,7 @@
 
 - insert:
     - id: session-ball
-      name: dsh-floating-ball
+      name: dsh-session-ball-plugin
       # `expandOnPending: false` = a pending question or approval does NOT
       # unfold the panel on its own (this is also the plugin's own default).
       # The ball turning its status colour and showing the badge count IS the

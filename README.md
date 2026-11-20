@@ -1,6 +1,10 @@
-# dsh-floating-ball · 悬浮球（非官方 · 社区自制）
+# dsh-session-ball-plugin · 悬浮球（非官方 · 社区自制）
 
-<img src="assets/icon-256.png" width="96" align="right" alt="dsh-floating-ball icon" />
+> **生产版 v1.0.0（2026-11-20 起）**：新版宿主 + 新球/面板（engine v2）是默认生产实现；
+> 原版插件（dsh-session-ball-plugin）已逐字备份到 `legacy/original-plugin/`，回滚步骤见
+> [`docs/PRODUCTION.md`](docs/PRODUCTION.md)。日常安装无需配置任何 `engine`。
+
+<img src="assets/icon-256.png" width="96" align="right" alt="dsh-session-ball-plugin icon" />
 
 
 > **非官方社区自制插件，与 DeepSeek / DeepSeek Harness 官方无关。**
@@ -8,7 +12,7 @@
 ## 来源与许可
 
 本仓库是基于 **EvilOfRed** 的 [`dsh-session-ball-plugin`](https://www.npmjs.com/package/dsh-session-ball-plugin)（MIT）
-改名并做了大量本地修改的版本：重写了球上视觉与面板筛选、修了高 DPI 拖动、把安装名改为 `dsh-floating-ball`。
+改名并做了大量本地修改的版本：重写了球上视觉与面板筛选、修了高 DPI 拖动、把安装名改为 `dsh-session-ball-plugin`。
 原始版权声明保留在 `LICENSE`（MIT, Copyright (c) 2026 EvilOfRed）。
 
 **非官方 · 社区自制**：本项目与 DeepSeek / DeepSeek Harness 官方无关；
@@ -306,13 +310,13 @@
 **从 GitHub 装（推荐）**：在 DSH Desktop 的内置终端里：
 
 ```
-dsh plugin --profile desktop add github:y1s2y3/dsh-floating-ball
+dsh plugin --profile desktop add github:y1s2y3/dsh-session-ball-plugin
 ```
 
-装完**重启 DSH Desktop**（插件名 `dsh-floating-ball`，Windows 专用）。
+装完**重启 DSH Desktop**（插件名 `dsh-session-ball-plugin`，Windows 专用）。
 
 > 本机访问 codeload.github.com 慢/不通时，可以在 Profile 的 `package.json` 里把依赖写成镜像地址：
-> `"dsh-floating-ball": "https://gh-proxy.com/https://codeload.github.com/y1s2y3/dsh-floating-ball/tar.gz/<commit>"`
+> `"dsh-session-ball-plugin": "https://gh-proxy.com/https://codeload.github.com/y1s2y3/dsh-floating-ball/tar.gz/<commit>"`
 > 再重启 Desktop。
 
 **从本地目录装（开发时）**：Web UI 的 Plugins → Add plugin 里填本目录绝对路径，或命令行：

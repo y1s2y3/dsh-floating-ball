@@ -1,0 +1,182 @@
+{
+  "labels": {
+    "send": "↑",
+    "ack": "知道了",
+    "pendingHint": "个待审批",
+    "sent": "已发出，等会话接手…",
+    "close": "×",
+    "placeholder": "写一句…",
+    "answer": "作答",
+    "answerIncomplete": "每个问题都要选一项或填一句",
+    "customAnswer": "也可以自己写一句…",
+    "newSession": "新会话",
+    "newSessionChip": "新建",
+    "pending": "等你处理",
+    "running": "运行中",
+    "unread": "已完成 · 未读",
+    "approval": "待审批",
+    "question": "待回答",
+    "error": "异常",
+    "next": "下一题",
+    "prev": "上一步",
+    "submit": "提交"
+  },
+  "statusLabels": {
+    "idle": "所有会话都空闲",
+    "working": "1 个会话在输出",
+    "asking": "2 个会话在等你",
+    "error": "1 个会话出错"
+  },
+  "panel": {
+    "panelWidth": 320,
+    "panelHeight": 460,
+    "entries": [
+      {
+        "key": "local-new",
+        "target": "new",
+        "title": "新会话",
+        "chip": "新建",
+        "state": "local",
+        "color": "#FF5B8DEF",
+        "hint": "",
+        "canAck": false,
+        "showInput": true,
+        "lock": false,
+        "cards": []
+      },
+      {
+        "key": "session-approval",
+        "target": "session-approval",
+        "title": "发布到生产环境",
+        "chip": "待审批",
+        "state": "approval",
+        "color": "#FFE0A64B",
+        "hint": "",
+        "canAck": false,
+        "showInput": false,
+        "lock": false,
+        "cards": [
+          {
+            "id": "card-approval",
+            "kind": "approval",
+            "title": "允许把这个文件写进项目目录吗？",
+            "hint": "工具：desktop_step",
+            "options": [
+              {
+                "id": "allowed-once",
+                "label": "允许一次"
+              },
+              {
+                "id": "rejected",
+                "label": "拒绝"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "session-question",
+        "target": "session-question",
+        "title": "发布前确认",
+        "chip": "待回答",
+        "state": "question",
+        "color": "#FFE0A64B",
+        "hint": "",
+        "canAck": false,
+        "showInput": false,
+        "lock": false,
+        "cards": [
+          {
+            "id": "card-question",
+            "kind": "question",
+            "title": "发布前确认",
+            "hint": "",
+            "items": [
+              {
+                "id": "q1",
+                "header": "发布确认",
+                "prompt": "这次发布要走哪种方式？",
+                "detail": "选择后立即生效；灰度期间需要值班同学盯监控。",
+                "multiSelect": false,
+                "options": [
+                  {
+                    "label": "灰度发布：先放 10% 流量观察 24 小时，再全量",
+                    "description": "需要值班同学盯监控，有问题可以一键回滚"
+                  },
+                  {
+                    "label": "直接全量发布",
+                    "description": "发布窗口内一次切换，回滚需要重新走审批"
+                  },
+                  {
+                    "label": "只发预发环境"
+                  }
+                ]
+              },
+              {
+                "id": "q2",
+                "header": "通知",
+                "prompt": "发布完成后要通知哪些人？",
+                "detail": "可以多选。",
+                "multiSelect": true,
+                "options": [
+                  {
+                    "label": "项目负责人 · 张三",
+                    "description": "钉钉 + 短信"
+                  },
+                  {
+                    "label": "测试同学 · 李四",
+                    "description": "钉钉"
+                  },
+                  {
+                    "label": "运维值班群"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "session-error",
+        "target": "session-error",
+        "title": "构建失败",
+        "chip": "异常",
+        "state": "error",
+        "color": "#FFE0574B",
+        "hint": "工具调用超时，最后一次重试也失败了",
+        "errorNote": "工具调用超时，最后一次重试也失败了",
+        "canAck": true,
+        "showInput": false,
+        "lock": false,
+        "cards": []
+      },
+      {
+        "key": "session-running",
+        "target": "session-running",
+        "title": "素材整理",
+        "chip": "输出中",
+        "state": "running",
+        "color": "#FF5B8DEF",
+        "hint": "",
+        "canAck": false,
+        "showInput": false,
+        "lock": true,
+        "cards": []
+      },
+      {
+        "key": "session-unread",
+        "target": "session-unread",
+        "title": "周报整理",
+        "chip": "未读",
+        "state": "idle",
+        "color": "#FF7C8598",
+        "hint": "",
+        "canAck": false,
+        "showInput": false,
+        "lock": false,
+        "unread": true,
+        "cards": []
+      }
+    ]
+  }
+}

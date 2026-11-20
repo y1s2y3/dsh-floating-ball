@@ -1,3 +1,16 @@
+Fonts bundled with this plugin:
+
+1) DshUiSans - the UI font of the floating ball and its panel
+   Source: Inter (Latin subset) as shipped with DSH Desktop,
+   Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter).
+   Licensed under the SIL Open Font License, Version 1.1.
+
+   The bundled files DshUiSans-Regular.ttf / DshUiSans-Medium.ttf / DshUiSans-SemiBold.ttf
+   are MODIFIED versions of that font: static instances at weight 400 / 500 / 600, subset to
+   the characters the ball UI uses, and renamed to "DshUiSans" (the reserved name "Inter" is
+   not used). CJK glyphs are not included; Windows font fallback supplies them.
+
+2) Noto Sans SC subset - only used inside the generated images in this folder
 Font used by the generated images in this folder:
 
   Noto Sans SC (source font), Copyright 2014-2021 Adobe (http://www.adobe.com/),

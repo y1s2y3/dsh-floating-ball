@@ -74,5 +74,7 @@ python tools\make-cover.py
 - `assets/fonts/OFL.txt`：许可证全文 + 源字体版权声明（© 2014-2021 Adobe，Reserved Font Name “Source”）。
 - 重新生成：`python tools/build-font-subset.py`（改文案后要同步脚本里的 CHARSET），再 `python tools/make-cover.py`。
 
-桌面球界面里的字体仍从 Windows 系统字体里选（Segoe UI Variable Text / Microsoft YaHei UI），
-这是**运行时选择**、不随包分发，也没有字体文件进仓库；如果要做严格自证，可以改成随附 Noto 字体。
+桌面球/面板的 UI 字体随包分发：`assets/fonts/DshUiSans-*.ttf`（由 DSH Desktop 自带的 Inter
+拉丁子集派生的 400/500/600 静态实例，子集到界面用到的字符，改名为 “DshUiSans”），
+宿主启动时把它物化到运行目录，球脚本用 `file:///...#DshUiSans` 载入；中文由 Windows 字体回退补齐（微软雅黑）。
+因此球上的拉丁字形与 DSH 界面（Inter）一致，且不再依赖系统里恰好装了某个 UI 字体。

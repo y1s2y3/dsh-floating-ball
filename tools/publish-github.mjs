@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url'
 const OWNER = 'y1s2y3'
 const NAME = 'dsh-floating-ball'
 const BRANCH = 'main'
-const VERSION = 'v0.11.2'
+const VERSION = 'v1.0.1'
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 
 const token = process.env.GH_TOKEN || (() => {
@@ -98,7 +98,7 @@ console.log('blobs uploaded:', treeItems.length)
 // 3) tree + commit
 const tree = await must('POST', `/repos/${OWNER}/${NAME}/git/trees`, { tree: treeItems })
 const commit = await must('POST', `/repos/${OWNER}/${NAME}/git/commits`, {
-  message: `release: ${VERSION} — 视觉封版（原创鲸鱼，图标/封面/桌面球统一）\n\n- 面板只显示待审核/异常/未读完成/进行中四类会话并按此排序\n- 拖动坐标修复（高 DPI 下不再越拖越偏）\n- 输入框缩小、统计行与拖动提示隐藏\n- 图标/封面/桌面球统一为同一只原创鲸鱼（无嘴、翘尾）`,
+  message: `release: ${VERSION} — 新宿主/新面板转生产，包名回归 dsh-session-ball-plugin\n\n- 生产引擎 v2：自研宿主 + 新球/新面板；旧版仅保留 engine: upstream 回滚\n- 面板：头部待处理胶囊、按内容自适应高度并支持滚动、发送/审批/多题作答、新会话\n- 球：悬停鲸鱼游动、点击手光标、橙色待审批、交叉淡入、拖动流畅度对齐原版\n- 修复：首次点击被吞、点输入框重启、发送 target 为空被静默丢弃、启动位置偏移\n- 原版插件逐字备份到 legacy/dsh-session-ball-plugin-original\n- 生产说明与回滚步骤见 docs/PRODUCTION.md`,
   tree: tree.sha,
   parents: [refSha]
 })
@@ -115,7 +115,7 @@ if (tagRef.status === 200) {
 } else {
   const tagObject = await must('POST', `/repos/${OWNER}/${NAME}/git/tags`, {
     tag: VERSION,
-    message: `dsh-floating-ball ${VERSION}：视觉封版（原创鲸鱼，图标/封面/桌面球统一）`,
+    message: `dsh-session-ball-plugin ${VERSION}：生产版（新宿主/新面板 + 原版备份）`,
     object: commit.sha,
     type: 'commit'
   })
@@ -127,16 +127,20 @@ if (tagRef.status === 200) {
 const releaseBody = [
   '**非官方 · 社区自制**（与 DeepSeek / DeepSeek Harness 官方无关）。',
   '',
-  'dsh-floating-ball 是 DSH 的 Windows 置顶悬浮球：所有会话的整体状态一眼可见 —— 几个在跑、谁在等你、有没有出错；**只要有会话在输出，球就是蓝色并缓慢呼吸，安静下来就是跑完了**。展开面板后每条会话自带输入框与卡片，可以直接在球上回话、批准、答问题。',
+  '**v1.0.1 起为生产版**：包名改为 `dsh-session-ball-plugin`（沿用原版名字），GitHub 仓库地址保持',
+  '`y1s2y3/dsh-floating-ball` 不变。原版插件已逐字备份到 `legacy/dsh-session-ball-plugin-original/`。',
   '',
-  '### 本版亮点',
-  '- 视觉封版：桌面球 / 插件图标 / 公众号封面统一为同一只原创鲸鱼（无嘴、尾鳍上扬、三颗上浮气泡）',
-  '- 面板只显示需要你处理的会话：待审核 → 异常 → 有未读已完成 → 进行中，其余隐藏',
-  '- 「未读完成」本地记录（unread.json），发送 / 知道了 / 关闭即视为已读',
-  '- 输入框更紧凑；聚合统计行与拖动提示隐藏',
-  '- 修复高 DPI（125%）下拖球越拖越偏',
-  '- 合规修正：补 MIT 上游归属、补 repository/author 元数据、去掉工具脚本里的本机绝对路径',
-  '- 字体授权：封面/预览图改用 SIL OFL 1.1 的 Noto Sans SC 子集（随仓库分发，含版权声明）',
+  'Windows 置顶悬浮球：所有会话的整体状态一眼可见 —— 几个在跑、谁在等你、有没有出错；**只要有会话在输出，',
+  '球就是蓝色并缓慢呼吸，安静下来就是跑完了**。展开面板后每条会话自带输入框与卡片，可以直接在球上回话、',
+  '批准、答问题、开新会话。',
+  '',
+  '### 本版亮点（v1.0.0 → v1.0.1）',
+  '- **新宿主 + 新面板转生产**（engine v2 为默认，`engine: upstream` 仅作回滚）',
+  '- 面板：头部「N 个待审批」橙色胶囊；高度按内容自适应、超过上限可滚动；发送 / 审批 / 多题分步作答 / 新会话',
+  '- 球：鼠标悬停鲸鱼游动（摇摆 + 浮动 + 气泡呼吸）、点击手光标、待审批橙色（错误仍为红色）',
+  '- 开关面板交叉淡入、拖动流畅度对齐原版（移动不夹紧、松手夹紧、拖动暂停轮询）',
+  '- 修复：首次点击被吞、点击输入框导致球进程重启、球上发送 target 为空被静默丢弃、启动位置偏移/半屏出界',
+  '- 原版插件逐字备份（`legacy/dsh-session-ball-plugin-original/`），回滚步骤见 `docs/PRODUCTION.md`',
   '',
   '### 安装',
   '在 DSH Desktop 内置终端里：',
@@ -147,20 +151,20 @@ const releaseBody = [
   '',
   '### 说明',
   '- 图标为原创鲸鱼轮廓，不是 DeepSeek 商标图形；「非官方」标注见 README。',
-  '- 本版视觉参数见 `docs/BRAND.md`，校验：`node tools/check-brand.mjs`。'
+  '- 旧版回滚：Profile 的 `session-ball` 配置加一行 `engine: upstream`，重启即可。'
 ].join('\n')
 const existingRelease = await api('GET', `/repos/${OWNER}/${NAME}/releases/tags/${VERSION}`)
 let release
 if (existingRelease.status === 200) {
   release = await must('PATCH', `/repos/${OWNER}/${NAME}/releases/${existingRelease.body.id}`, {
-    name: `${VERSION} · 视觉封版`,
+    name: `${VERSION} · 生产版（新宿主/新面板）`,
     body: releaseBody
   })
   console.log('release updated:', release.html_url)
 } else {
   release = await must('POST', `/repos/${OWNER}/${NAME}/releases`, {
     tag_name: VERSION,
-    name: `${VERSION} · 视觉封版`,
+    name: `${VERSION} · 生产版（新宿主/新面板）`,
     body: releaseBody,
     draft: false,
     prerelease: false
@@ -170,7 +174,7 @@ if (existingRelease.status === 200) {
 
 // 7) 仓库描述 + topics
 await must('PATCH', `/repos/${OWNER}/${NAME}`, {
-  description: '非官方 DSH 悬浮球（Windows 置顶）：任务跑完没有，一眼就知道。dsh-floating-ball · 非官方社区自制',
+  description: '非官方 DSH 悬浮球（Windows 置顶）：任务跑完没有，一眼就知道。dsh-session-ball-plugin · 非官方社区自制',
   has_issues: true,
   has_wiki: false,
   has_projects: false
