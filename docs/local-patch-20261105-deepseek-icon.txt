@@ -1,0 +1,42 @@
+LOCAL PATCH - DeepSeek icon on the floating session ball
+=========================================================
+Date: 2026-11-05
+File patched: resources/ball.ps1
+Backup:       resources/ball.ps1.bak-20261105-pretty-deepseek
+             (there is also ball.ps1.orig-20261103-prety from an older local tweak)
+
+What changed
+------------
+1. The collapsed ball's "DS" TextBlock (BallGlyph) was replaced by a vector
+   Path named BallMark holding the DeepSeek whale mark (24x24 viewBox,
+   Stretch=Uniform, Fill #F2FFFFFF).
+2. The ball body's radial gradient went from opaque dark
+   (#FF4C586B -> #FF0D1015) to semi-transparent DeepSeek blue
+   (#B86E8BFF -> #993550D8), so the ball reads as a translucent icon.
+3. Apply-Shape now sizes the mark as 0.56 * ballSize, so it stays proportional
+   at any configured ballSize (default 64, this machine runs 48).
+
+The status ring, halo, badge and the whole panel are untouched. Window-level
+opacity still comes from the profile config (cordis.patch.yml, session-ball
+block, `opacity`, currently 0.88). The effective look is that opacity times the
+alphas above.
+
+How to apply / undo without restarting DSH
+------------------------------------------
+The host re-reads resources/ball.ps1 every time it spawns the ball, and it
+respawns the ball ~2 s after the ball's powershell.exe process exits. So:
+
+  undo:   copy ball.ps1.bak-20261105-pretty-deepseek over ball.ps1
+  redo:   restore the patched ball.ps1 (or re-apply the same three edits)
+  then:   end the powershell.exe process that owns the small layered window
+          (the host relaunches it automatically with the new script)
+
+No DSH Desktop restart is needed for ball-only changes.
+
+Tuning knobs
+------------
+- more/less transparent ball: change the two alpha bytes in the gradient stops
+  (#B86E8BFF / #993550D8) and/or `opacity` in the profile config.
+- whale colour: BallMark Fill.
+- whale size: the 0.56 factor in Apply-Shape.
+- This is a package-local edit: a plugin reinstall/update overwrites it.

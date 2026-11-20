@@ -1,0 +1,200 @@
+# Configuration layer contributed by `dsh-floating-ball`.
+#
+# It is applied after the bundle layers of the Profile that installs it, so the
+# row below resolves `dsh-floating-ball` from the running Profile and
+# contributes nothing that the Profile must declare itself.
+#
+# (The package was called `dsh-thinking-ball-plugin` until the ball stopped
+# showing anything "thinking": the chain of thought and the answer stream were
+# dropped first, the tool-call card later. The row id moved with it —
+# `thinking-ball` → `session-ball` — so a Profile patch layer that still targets
+# the old id must be updated with the rename.)
+# The row is an ordinary Host plugin with no tools, no MCP server and no
+# client half. What it does:
+#
+#   * renders a native Windows always-on-top floating ball (a separate
+#     `powershell.exe -STA` process running WPF, so it stays visible while the
+#     Harness Web UI is in the background);
+#   * feeds that ball from Host events only — `agent/assistant-stream` for the
+#     step-level state (thinking / writing / calling a tool, usage),
+#     `session/event` for durable tool state, turn state and the session TITLE,
+#     and `api-session/*` for the session directory (which decides which entries
+#     the panel holds). The ball shows STATUS, not content: the chain of
+#     thought, the answer stream and the current tool call are all absent, and
+#     the host does not even put them in the state document;
+#   * carries THE TURN SIGNAL — the answer to "is that task done yet?" without
+#     reading a word. The status is still aggregate (it never follows one
+#     session's step), but it now has a state for "something is still
+#     outputting": `status.key = 'working'` with the accent blue, taken from the
+#     same `busySessions()` list the entry locks use, and it ENDS BY ITSELF —
+#     the last session to stop outputting puts the ball back to the idle grey.
+#     On the ball that colour is worn by the ring AND by the status dot, and the
+#     white halo (which already meant "a session is running") now breathes
+#     instead of sitting lit, so the return to a still, grey ball IS the
+#     completion signal. Precedence is deliberate: an approval, a question or an
+#     error colour wins over `working`, and those three do not breathe (the ring
+#     only breathes in the working look; the halo keeps breathing whenever any
+#     session runs). The state document went to v7 (the turn signal) and then to
+#     v8 (the panel is filled by SESSION ENTRIES); a ball script newer than its
+#     host paints `working` itself when the document is older than v7, so the
+#     signal also works before the harness is restarted with this version (a
+#     pre-v8 document simply has no entries to show — the panel comes up empty
+#     while the colours keep working);
+#   * prepends a listener to `user-questions/request` and `approval/request` so
+#     a pending question or approval shows up on the ball and can be answered
+#     there. Both listeners call `next()` immediately, so the Harness Web UI
+#     keeps showing its own card at the same time: whichever surface answers
+#     first wins, and nothing is blocked by the ball being ignored. The two
+#     directions each have to be cleaned up: an answer given on the ball
+#     withdraws the forwarded request (it swaps `request.signal` for a composite
+#     it can abort), which is what makes the Web card close instead of waiting
+#     forever, and an approval that ends anywhere ELSE (answered in the Web UI,
+#     no available answerer, turn aborted) retires the ball's card — both when
+#     the forwarded request settles and when the durable `approval/asked` +
+#     `approval/decided` pair reaches the session log. Without that second half
+#     the ball kept a card nobody could answer ("the model is waiting for your
+#     approval") after the Web UI had already decided. A card is rendered INSIDE
+#     the entry of the session it belongs to, so nothing has to say which
+#     session asked;
+#   * fills the expanded panel with ONE ENTRY PER SESSION. An entry appears for a
+#     session that is outputting, that is waiting for you (a question or an
+#     approval) or that has just errored (and has not been acknowledged yet) —
+#     and it does NOT go away when that session goes quiet: it stays, grey, so
+#     the session can still be talked to. Removing it is the row's own "x"
+#     (`kind: 'close'`), and the session comes back the next time it has NEWS,
+#     which the host tracks as a per-session activity counter. What counts as
+#     news is deliberate: a NEW TURN (`turn/start`, or a stream frame whose turn
+#     number really changed), a user message whose source is the user (this is
+#     the "I removed that row, then talked to that session again" path), the
+#     session directory flipping to running, a new card, or a new error. STEPS
+#     WITHIN ONE TURN DO NOT COUNT — without that, "x" on a running session would
+#     be undone by the next stream frame. `config.entryLimit` (default 12) trims
+#     the OLDEST entries that have nothing going on when there are too many;
+#     entries that are outputting or holding a card are never trimmed.
+#
+#     The entry carries its OWN text box and its OWN Send button (`kind:
+#     'prompt'`, with the row's `target` and `key` on the action): the target and
+#     the box are the same thing, so there is no dropdown to get wrong and no
+#     "sent to whom?" question. Text typed there is submitted through
+#     `ctx.sessionController.prompt`, the very entry the Web composer uses.
+#     A row is LOCKED while its own target is outputting and for a few seconds
+#     after a send — that grey box (plus the watermark the host names) is the
+#     answer to 'did my sentence go out?', and the receipt for the send is also
+#     written into that same row's own notice line, right under the box. The cost
+#     is that a running turn cannot be interjected into while that is on;
+#     `lockComposeWhileBusy: false` turns the lock off and restores it (the
+#     entry's colours keep saying "it is outputting" either way).
+#
+#     The "+" button in the panel's header opens a ONE-ROW-PER-WORKSPACE picker
+#     and adds an empty LOCAL entry (title "new session · <workspace>", the host
+#     sends that line because the ball script is ASCII-only) whose first sentence
+#     creates the session inside that workspace — a workspace target is what
+#     actually registers the new session in that sidebar group
+#     (`create({ workspaceId })`; a bare `cwd` does not, and the session would
+#     sit in the ungrouped list). WITH NO WORKSPACE AT ALL there is still exactly
+#     one row — "new session, default directory" — which creates with a `cwd`
+#     (the directory of the most recently active session, or the harness default)
+#     so the button is never dead; that session may land in the ungrouped list,
+#     which is the honest trade for "a button that cannot be used". The workspace
+#     registry is looked up ON EVERY USE (see below), because at mount time the
+#     harness has often not published it yet — reading it once at mount is what
+#     made that button permanently grey in practice. The receipt names the real
+#     session, and the local row hands over to it.
+#
+#     THE OPTIONAL SERVICES ARE LOOKED UP ON EVERY USE, NOT ONCE AT MOUNT
+#     (`ctx.sessionProjections`, `ctx.sessions`, `ctx.sessionTitle`,
+#     `ctx.workspaceRegistry`). The profile is an asynchronously assembled tree
+#     and several of those are simply not published yet when this row mounts:
+#     measured, the ball's own first log line read "title projection: no / live
+#     sessions: no / sessionTitle service: no" while the same machine reported
+#     "yes" for all three on a differently timed start. Capturing them at mount
+#     means THAT start never sees the workspace registry at all — which is
+#     exactly how the "+" button ended up permanently grey on a machine that does
+#     have a workspace registered. Looking them up per use costs a table lookup
+#     and means a late service is picked up without restarting the plugin.
+#
+#     THE RED ONE IS THE ONLY COLOUR A HUMAN CLEARS: an error paints the ball red
+#     and keeps it red until somebody presses "got it" on that entry (`kind:
+#     'ack'`), or presses that entry's "x" — which the host treats as "got it"
+#     PLUS "remove the row" (`kind: 'close'` acking on the way out) — or until
+#     that very session starts a new turn, which is the older way out. That last
+#     equivalence is not cosmetic: the "got it" button lives ON the row, so
+#     removing the row without acknowledging would leave a red nobody could ever
+#     clear. Acknowledging stops that error from counting towards the colour (and
+#     towards the meta line) but nothing else: with "got it" the entry stays,
+#     reading "acked" with the reason still on it; with "x" it goes away. A
+#     session that starts outputting again, or errors again, brings the colour
+#     back — so red needs no other hint, and an aborted turn (which the host does
+#     count as an error) can be cleared the same way.
+#
+#   * the panel is as tall as its content, up to `panelHeight` (a ceiling, not a
+#     size): with the entries gone a fixed height left a large blank in the
+#     middle of an idle panel. `panelWidth` is still the final width. The height
+#     is MEASURED BEFORE the window is resized -- the expand path gives the window
+#     its width and its content's height in one go, never the ceiling first and
+#     the real number after (that pair is what a user could catch a frame of: "it
+#     opens bigger and then shrinks").
+#
+# SIDE EFFECT — a real desktop window on the dsh host.
+#
+# Enabling this row starts a second process that draws an always-on-top window
+# over every application, including full-screen ones. The window is created
+# with WS_EX_NOACTIVATE, so in its normal state it never takes keyboard focus and
+# never swallows what the model types — with ONE deliberate exception: clicking a
+# text box on the ball (the compose box, or the "say it in your own words" box
+# inside a pending card) drops that style for as long as the user is typing in
+# it, so the ball can take the keyboard; Escape, focus loss or collapsing the
+# panel hand it straight back. While that window of time lasts, the ball IS the
+# foreground window, so a `SendInput` burst from a desktop-driving tool would
+# land in that box. The ball does not inspect what other tools are doing and so
+# does not defend against that overlap — do not type on the ball while a desktop
+# task runs.
+#
+# "Always on top" is really two things on Windows: the WS_EX_TOPMOST style bit and
+# the topmost BAND the window sits in, and only SetWindowPos puts a window back
+# into the band. The bit can stay set while the band is lost (measured: the ball
+# 58 windows down the z-order, alive, visible, on screen and completely covered by
+# a maximised browser — the user's "the ball disappeared after a while"). The ball
+# therefore carries a watchdog: every 1.5s it walks the z-order upwards from its
+# own window and, only if a VISIBLE window without the topmost bit is above it,
+# re-asserts HWND_TOPMOST and writes one line to ball.log. It never fires for
+# another topmost window (that one has the right to be there) and it never fires
+# while the ball is fine.
+#
+# The ball does NOT get out of the way: while `desktop_step` drives the mouse and
+# keyboard it stays exactly as it is — shape, opacity and clickability never
+# change. It therefore APPEARS in the screenshots that tool returns, and a click
+# aimed at the pixel under the ball lands on the ball. Collapse the ball before
+# starting a desktop task if that trade matters.
+#
+# (Earlier versions had a `shrinkWhileDesktop` / `desktopOpacity` /
+# `desktopTools` triple that dimmed the ball, made it click-through and shrank it
+# while an input-driving tool ran, plus a `deskBusy` signal that made the ball
+# refuse and hand back the keyboard during such a run. Both were removed on
+# purpose: the ball does not model other tools. The three config keys are inert
+# now — Schemastery keeps unknown keys, and nothing reads them any more.)
+#
+# WINDOWS ONLY. On other platforms the plugin stays mounted and inert: it logs
+# one line and starts nothing.
+#
+# To withdraw the whole thing without uninstalling, disable the row
+# (`disabled: true`) or set `enabled: false` in `config`; either one kills the
+# helper process.
+#
+# ---------------------------------------------------------------------------
+# NOTE — exactly one session-ball row per Profile.
+#
+# Two rows would start two balls, each with its own state file in the same
+# per-user runtime directory. Keep one.
+
+- insert:
+    - id: session-ball
+      name: dsh-floating-ball
+      # `expandOnPending: false` = a pending question or approval does NOT
+      # unfold the panel on its own (this is also the plugin's own default).
+      # The ball turning its status colour and showing the badge count IS the
+      # notification; the panel opens when the user clicks the ball. Set it to
+      # true in your own Profile patch layer to get the earlier behaviour back
+      # (the panel unfolds the moment a question or approval arrives).
+      config:
+        expandOnPending: false

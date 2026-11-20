@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="dsh-floating-ball">
+  <title>dsh-floating-ball（非官方 · 社区自制，原创鲸鱼轮廓）</title>
+  <desc>An original whale silhouette drawn for this plugin; it is not the DeepSeek logo.</desc>
+  <defs>
+    <radialGradient id="ball" cx="34%" cy="26%" r="92%">
+      <stop offset="0" stop-color="#B0CAFF"/>
+      <stop offset="0.4" stop-color="#749AFD"/>
+      <stop offset="0.74" stop-color="#4A7AE8"/>
+      <stop offset="1" stop-color="#345CC8"/>
+    </radialGradient>
+    <radialGradient id="gloss" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shade" cx="50%" cy="44%" r="56%">
+      <stop offset="0.62" stop-color="#0A1A4A" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0A1A4A" stop-opacity="0.47"/>
+    </radialGradient>
+    <linearGradient id="whale" gradientUnits="userSpaceOnUse" x1="380" y1="250" x2="640" y2="780">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E8F0FF"/>
+    </linearGradient>
+  </defs>
+  <circle cx="512" cy="512" r="440" fill="url(#ball)"/>
+  <circle cx="512" cy="512" r="440" fill="url(#shade)"/>
+  <ellipse cx="352" cy="296" rx="306" ry="214" fill="url(#gloss)"/>
+  <circle cx="512" cy="512" r="440" fill="none" stroke="#284AA0" stroke-opacity="0.27" stroke-width="8"/>
+  <g transform="translate(262.9 286.1) scale(4.7)">
+    <path d="M 4 50 C 4 33 16 21 34 19 C 47 17 57 21 63 28 C 69 34 73 38 77 36 C 85 27 94 17 101 10 C 97 26 89 38 81 45 C 90 47 99 51 105 57 C 97 62 86 60 79 55 C 73 65 61 70 48 70 C 32 70 16 64 8 58 C 5 55 4 52 4 50 Z" fill="url(#whale)"/>
+    <path d="M 36 63 C 32 75 38 85 50 89 C 48 81 46 73 44 67 Z" fill="url(#whale)"/>
+    <path d="M 58 23 C 56 12 63 6 71 8 C 67 14 65 20 63 27 Z" fill="url(#whale)"/>
+    <circle cx="22" cy="44" r="2.4" fill="#3A60C6" fill-opacity="0.92"/>
+    <circle cx="18" cy="11" r="2.5" fill="#FFFFFF" fill-opacity="0.94"/>
+    <circle cx="11.5" cy="4.5" r="1.6" fill="#FFFFFF" fill-opacity="0.75"/>
+    <circle cx="23" cy="5.5" r="1.1" fill="#FFFFFF" fill-opacity="0.55"/>
+  </g>
+  <circle cx="742" cy="286" r="17" fill="#FFFFFF" opacity="0.86"/>
+  <circle cx="792" cy="232" r="11" fill="#FFFFFF" opacity="0.63"/>
+  <circle cx="828" cy="190" r="7" fill="#FFFFFF" opacity="0.41"/>
+</svg>

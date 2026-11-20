@@ -1,0 +1,4 @@
+# 统一按 LF 存盘：resources/ball.ps1 是 Windows PowerShell 脚本，LF 换行可直接运行，
+# 但混用 CRLF 会让每次 diff 变成整文件重写（本机 core.autocrlf=true，必须在这里固定）。
+* text=auto eol=lf
+*.ps1 text eol=lf
