@@ -1,5 +1,5 @@
 param(
-  [string]$OutDir = 'C:\Users\13065\Desktop\plugin\dsh-floating-ball\assets'
+  [string]$OutDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'assets')
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName WindowsBase, PresentationCore, PresentationFramework

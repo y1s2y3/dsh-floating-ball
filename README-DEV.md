@@ -5,7 +5,7 @@
 原来它的全部实体只存在于 DSH Desktop 的 profile 里：
 
 ```
-C:\Users\13065\.dsh\profiles\desktop\node_modules\dsh-floating-ball
+%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-floating-ball
 ```
 
 那一份会被插件更新 / `pnpm install` 覆盖，且没有版本管理。现在以本目录为准：
@@ -61,7 +61,7 @@ C:\Users\13065\.dsh\profiles\desktop\node_modules\dsh-floating-ball
 在资源管理器里双击 `deploy.cmd`，或在终端里：
 
 ```powershell
-cd C:\Users\13065\Desktop\plugin\dsh-floating-ball
+cd %USERPROFILE%\Desktop\plugin\dsh-floating-ball
 node deploy.mjs --dry-run        # ① 先看要同步哪些文件（不写盘）
 node deploy.mjs                  # ② 真正同步（备份 → 复制 → 校验登记 → 重启球）
 node deploy.mjs --restart-only   # ③ 什么都没改、只想让球重启一遍
@@ -81,7 +81,7 @@ node deploy.mjs --no-restart     # ④ 只复制，不动球
 **部署前预检**：`deploy.mjs` 会先检查 `resources/ball.ps1` —— 必须纯 ASCII、XAML 注释里不能出现
 `--`（也不能以 `-` 结尾）；不通过就直接退出、一个文件都不复制（这两个错误都曾让球启动即退出）。
 
-**权限提醒**：它要写 `C:\Users\13065\.dsh\...`、还要结束球进程。DSH 会话里的沙箱默认是 workspace-write，
+**权限提醒**：它要写 `%USERPROFILE%\.dsh\...`、还要结束球进程。DSH 会话里的沙箱默认是 workspace-write，
 这两件事都做不了，需要危险全权限；最省事的是直接双击 `deploy.cmd`（在沙箱之外运行）。
 
 **如果哪天从 `backups/` 恢复了 profile 里那份**，第一次 deploy 会看到 `resources/ball.ps1` 显示「修改」——
@@ -107,14 +107,14 @@ node deploy.mjs
 ```
 
 profile 侧的回滚：把 `backups/<时间戳>/dsh-floating-ball/` 整份复制回
-`C:\Users\13065\.dsh\profiles\desktop\node_modules\dsh-floating-ball\`，再 `node deploy.mjs --restart-only`。
+`%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-floating-ball\`，再 `node deploy.mjs --restart-only`。
 
 ---
 
 ## 六、调试与已知边界
 
 - 球是独立的 `powershell.exe -STA` + WPF 窗口（不是网页元素），所以能浮在所有窗口之上；只支持 Windows。
-- 运行目录：`C:\Users\13065\AppData\Local\dsh-session-ball\default\`
+- 运行目录：`%USERPROFILE%\AppData\Local\dsh-session-ball\default\`
   - `state-<n>.json`：宿主每 120 ms 落一份完整视图状态（球读取序号最大的那份）；`v` 是状态文档版本（当前 8）；
   - `ball.log`：宿主与球都往里写日志，排查「球没出来 / 颜色不对」先看它；
   - 放一个空的 `debug.flag` 进去，**下次球启动**时打开交互追踪。

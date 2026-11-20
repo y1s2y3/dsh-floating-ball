@@ -5,6 +5,15 @@
 
 > **非官方社区自制插件，与 DeepSeek / DeepSeek Harness 官方无关。**
 > 图标、名称里的「悬浮球」只描述功能，不代表官方立场。
+## 来源与许可
+
+本仓库是基于 **EvilOfRed** 的 [`dsh-session-ball-plugin`](https://www.npmjs.com/package/dsh-session-ball-plugin)（MIT）
+改名并做了大量本地修改的版本：重写了球上视觉与面板筛选、修了高 DPI 拖动、把安装名改为 `dsh-floating-ball`。
+原始版权声明保留在 `LICENSE`（MIT, Copyright (c) 2026 EvilOfRed）。
+
+**非官方 · 社区自制**：本项目与 DeepSeek / DeepSeek Harness 官方无关；
+图标（`assets/`）是为本插件原创绘制的鲸鱼轮廓，不是 DeepSeek 商标图形。
+
 > 图标是**为本插件原创绘制的鲸鱼轮廓**（不是 DeepSeek 的商标图形），只保留「蓝色悬浮球 + 上浮小气泡」的视觉语言，方便一眼认出这是悬浮球。**视觉已封版（v0.11.0）**：桌面球、图标、公众号封面是同一只鲸鱼，详见 `docs/BRAND.md`，校验跑 `node tools/check-brand.mjs`。
 
 

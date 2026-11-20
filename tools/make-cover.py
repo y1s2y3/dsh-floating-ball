@@ -1,7 +1,7 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-ROOT = r"C:\Users\13065\Desktop\plugin\dsh-floating-ball\assets"
+ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets")
 W, H = 900, 383
 SS = 2  # supersample for the cover
 
