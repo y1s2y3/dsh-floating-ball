@@ -9,6 +9,21 @@
 
 > **非官方社区自制插件，与 DeepSeek / DeepSeek Harness 官方无关。**
 > 图标、名称里的「悬浮球」只描述功能，不代表官方立场。
+## 📖 用法、配置与踩坑（写在公众号）
+
+GitHub 这里只放**代码和发布包**；怎么少踩坑、怎么调到顺手，我写在公众号「**PM 的 AI 手记**」里，
+因为公众号能改、能补充，GitHub 的 README 改一次要发一个 commit。
+
+- 想一次看完我做的几个插件 → 后台回复「**地图**」，拿《DSH 插件地图》
+- 想直接抄我的配置（不是安装包，安装包就在本仓库 Releases） → 回复「**配置**」
+- 插件更新、以及「**哪些版本别装**」 → 也会在那里先说一句
+
+> 这个号只写 DeepSeek Harness 的插件实测和踩坑，不发广告。
+
+<!-- 有二维码图片后，放到 assets/ 下并取消下面这行的注释
+<img src="assets/wechat-qr.png" width="150" alt="公众号：PM 的 AI 手记" />
+-->
+
 ## 来源与许可
 
 本仓库是基于 **EvilOfRed** 的 [`dsh-floating-ball`](https://www.npmjs.com/package/dsh-floating-ball)（MIT）
